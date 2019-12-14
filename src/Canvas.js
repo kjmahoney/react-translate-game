@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { init, Sprite, GameLoop, initKeys, keyPressed } from "kontra";
 import { moveBall } from "./utils/move-ball.js";
 import { movePlayer } from "./utils/move-player.js";
+import { collision } from "./utils/collision.js";
 import settings from "./settings";
 import styles from "./Canvas.module.scss";
 
@@ -39,6 +40,7 @@ const Canvas = () => {
         ball.update();
         moveBall(ball, canvas);
         movePlayer(player, canvas, playerVelocity);
+        collision(ball, player, canvas);
       },
       render: function() {
         ball.render();

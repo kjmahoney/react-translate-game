@@ -1,6 +1,6 @@
 const settings = {
-  ballVelocity: 4,
-  playerVelocity: 4
+  ballVelocity: 5,
+  playerVelocity: 6
 };
 
 export default settings;
