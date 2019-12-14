@@ -1,14 +1,23 @@
 import React, { useEffect } from "react";
-import { init, Sprite, GameLoop } from "kontra";
-import { move } from "./utils/move.js";
+import { init, Sprite, GameLoop, initKeys, keyPressed } from "kontra";
+import { moveBall } from "./utils/move-ball.js";
+import { movePlayer } from "./utils/move-player.js";
 import settings from "./settings";
 import styles from "./Canvas.module.scss";
 
-const { ballVelocity } = settings;
+const { ballVelocity, playerVelocity } = settings;
 
 const Canvas = () => {
   useEffect(() => {
     const { canvas } = init();
+
+    let player = new Sprite({
+      x: 300,
+      y: 380,
+      color: "blue",
+      width: 50,
+      height: 20
+    });
 
     let ball = new Sprite({
       x: 100,
@@ -28,10 +37,12 @@ const Canvas = () => {
     let loop = GameLoop({
       update: function() {
         ball.update();
-        move(ball, canvas);
+        moveBall(ball, canvas);
+        movePlayer(player, canvas, playerVelocity);
       },
       render: function() {
         ball.render();
+        player.render();
       }
     });
 
