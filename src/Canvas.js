@@ -29,11 +29,15 @@ const Canvas = () => {
     function preload() {
       this.load.image("field", Field);
     }
-
+    var floor;
     function create() {
       const field = this.add.image(0, 0, "field").setOrigin(0, 0);
       field.displayWidth = fieldWidth;
       field.displayHeight = fieldHeight;
+
+      const rect = new Phaser.Geom.Rectangle(fieldWidth - 400, 200, 300, 200);
+      const graphics = this.add.graphics({ fillStyle: { color: 0x0000ff } });
+      graphics.fillRectShape(rect);
     }
 
     function update() {}
