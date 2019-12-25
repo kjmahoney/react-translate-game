@@ -1,57 +1,45 @@
 import React, { useEffect } from "react";
-import { init, Sprite, GameLoop, initKeys, keyPressed } from "kontra";
+import Phaser from "phaser";
 import { moveBall } from "./utils/move-ball.js";
 import { movePlayer } from "./utils/move-player.js";
 import { collision } from "./utils/collision.js";
 import settings from "./settings";
 import styles from "./Canvas.module.scss";
-
-const { ballVelocity, playerVelocity } = settings;
+import Field from "./grass.jpg";
 
 const Canvas = () => {
+  const fieldWidth = window.innerWidth - 100;
+  const fieldHeight = window.innerHeight - 100;
+
   useEffect(() => {
-    const { canvas } = init();
-
-    let player = new Sprite({
-      x: 300,
-      y: 380,
-      color: "blue",
-      width: 50,
-      height: 20
-    });
-
-    let ball = new Sprite({
-      x: 100,
-      y: 80,
-      color: "white",
-      radius: 20,
-      dx: ballVelocity,
-      dy: ballVelocity,
-      render: function() {
-        this.context.fillStyle = this.color;
-        this.context.beginPath();
-        this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        this.context.fill();
+    var config = {
+      type: Phaser.CANVAS,
+      width: fieldWidth,
+      height: fieldHeight,
+      parent: "canvasContainer",
+      scene: {
+        preload: preload,
+        create: create,
+        update: update
       }
-    });
+    };
 
-    let loop = GameLoop({
-      update: function() {
-        ball.update();
-        moveBall(ball, canvas);
-        movePlayer(player, canvas, playerVelocity);
-        collision(ball, player, canvas);
-      },
-      render: function() {
-        ball.render();
-        player.render();
-      }
-    });
+    var game = new Phaser.Game(config);
 
-    loop.start(); // start the game
+    function preload() {
+      this.load.image("field", Field);
+    }
+
+    function create() {
+      const field = this.add.image(0, 0, "field").setOrigin(0, 0);
+      field.displayWidth = fieldWidth;
+      field.displayHeight = fieldHeight;
+    }
+
+    function update() {}
   });
 
-  return <canvas height="400" width="600" className={styles.canvas}></canvas>;
+  return <div className={styles.container} id="canvasContainer"></div>;
 };
 
 export default Canvas;
